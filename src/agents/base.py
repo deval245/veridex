@@ -3,6 +3,7 @@ from typing import Optional
 from src.core.types import Task, Result, Context
 from src.core.llm import LLMProvider
 from src.config import Settings
+from src.evaluation.metrics import MetricsCollector, MetricsContext
 import asyncio
 from functools import wraps
 
@@ -28,11 +29,13 @@ class Agent(ABC):
     def __init__(
         self,
         llm_provider: LLMProvider,
-        settings: Settings
+        settings: Settings,
+        metrics_collector: Optional[MetricsCollector] = None
     ):
         self.llm = llm_provider
         self.settings = settings
         self.name = self.__class__.__name__
+        self.metrics = metrics_collector or MetricsCollector()
     
     @abstractmethod
     def can_handle(self, task: Task) -> bool:
@@ -52,19 +55,20 @@ class Agent(ABC):
                 error=f"{self.name} cannot handle task type: {task.task_type}"
             )
         
-        try:
-            return await asyncio.wait_for(
-                self.execute(task, ctx),
-                timeout=self.settings.agent.timeout / 1000
-            )
-        except asyncio.TimeoutError:
-            return Result(
-                success=False,
-                error=f"{self.name} execution timeout"
-            )
-        except Exception as e:
-            return Result(
-                success=False,
-                error=f"{self.name} error: {str(e)}"
-            )
+        with MetricsContext(self.metrics, self.name, task.task_type):
+            try:
+                return await asyncio.wait_for(
+                    self.execute(task, ctx),
+                    timeout=self.settings.agent.timeout / 1000
+                )
+            except asyncio.TimeoutError:
+                return Result(
+                    success=False,
+                    error=f"{self.name} execution timeout"
+                )
+            except Exception as e:
+                return Result(
+                    success=False,
+                    error=f"{self.name} error: {str(e)}"
+                )
 

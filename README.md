@@ -3,10 +3,10 @@
 > **Universal API Compliance Validation powered by Multi-Agent AI**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![arXiv](https://img.shields.io/badge/arXiv-Coming%20Soon-b31b1b.svg)](https://arxiv.org)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**VERIDEX** is a self-evolving multi-agent system that autonomously validates API compliance across any domain using neuro-symbolic reasoning.
+**VERIDEX** is a production-grade multi-agent system for automated API compliance validation using LLM-powered reasoning.
 
 ## 🎯 What Problem Does VERIDEX Solve?
 
@@ -47,74 +47,46 @@ VERIDEX makes validation:
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Python 3.9+
-- OpenAI API key (or Claude/Llama)
-- 8GB RAM minimum
-
-### Installation
-
 ```bash
-# Clone repository
+# Clone and setup
 git clone https://github.com/yourusername/veridex.git
 cd veridex
+./setup.sh
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Add API keys to .env
+# - OPENAI_API_KEY (https://platform.openai.com/api-keys)
+# - TMDB_API_KEY (https://www.themoviedb.org/settings/api)
 
-# Install dependencies
-pip install -r requirements.txt
-
-# Setup environment
-cp .env.example .env
-# Edit .env and add your OpenAI API key
-```
-
-### Run Demo
-
-```bash
-# Run content rating validation demo
+# Run demo
+source venv/bin/activate
 python examples/content_rating_demo.py
-
-# Run with custom data
-python examples/validate_api.py --input data/my_content.csv
 ```
 
-## 📊 Example Use Cases
-
-### 1. Content Rating Validation (Demo)
+### Use in Code
 
 ```python
-from veridex import VERIDEX
-from veridex.adapters import TMDbAdapter
+from src.veridex import VERIDEX
+import asyncio
 
-# Initialize VERIDEX
-validator = VERIDEX(
-    data_source=TMDbAdapter(api_key="your_tmdb_key"),
-    domain="content_ratings"
-)
+async def main():
+    veridex = VERIDEX(tmdb_api_key="your_key")
+    result = await veridex.validate_content_rating(
+        movie_id="550", expected_rating="R", country="US"
+    )
+    print(f"{result.status}: {result.reason}")
+    await veridex.cleanup()
 
-# Validate content
-results = validator.validate(
-    content_ids=["550", "deadpool"],
-    regions=["US", "BR", "UK"]
-)
-
-# Get detailed report
-results.to_csv("validation_report.csv")
-print(results.summary())
+asyncio.run(main())
 ```
 
-### 2. Financial Compliance (Coming Soon)
+## 📊 Features
 
-```python
-validator = VERIDEX(
-    data_source=YourBankAPI(),
-    domain="aml_compliance"
-)
-```
+- ✅ **Multi-agent orchestration** with timeout and retry logic
+- ✅ **LLM-powered reasoning** for intelligent validation
+- ✅ **Pluggable data sources** (TMDb, OMDb, custom APIs)
+- ✅ **Async-first** for production performance
+- ✅ **Type-safe** configuration via Pydantic
+- ✅ **Zero hardcoding** - all behavior config-driven
 
 ## 🧪 Running Tests
 
@@ -147,10 +119,9 @@ veridex/
 └── configs/             # Configuration files
 ```
 
-## 🎓 Research
+## 🔬 Technical Details
 
-**Paper**: Coming soon on arXiv  
-**Benchmark**: PolicyBench dataset (in preparation)
+See `docs/ARCHITECTURE.md` for system design and implementation details.
 
 ## 🤝 Contributing
 
@@ -165,15 +136,12 @@ MIT License - see [LICENSE](LICENSE) for details.
 **Deval Thakkar**  
 - Email: devalth8@gmail.com
 - GitHub: [@yourusername](https://github.com/yourusername)
-- Website: [veridex.cloud](https://veridex.cloud)
 
-## 🙏 Acknowledgments
+## 🙏 Built With
 
-Built with:
-- [LangChain](https://github.com/langchain-ai/langchain) for agent orchestration
-- [OpenAI GPT-4](https://openai.com) for language understanding
-- [Neo4j](https://neo4j.com) for knowledge graphs
-- [Z3 Solver](https://github.com/Z3Prover/z3) for formal verification
+- [OpenAI GPT-4](https://openai.com) - Language understanding
+- [Pydantic](https://pydantic.dev) - Data validation
+- [aiohttp](https://docs.aiohttp.org) - Async HTTP client
 
 ---
 

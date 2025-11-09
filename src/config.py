@@ -30,7 +30,11 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     
     openai_api_key: Optional[str] = None
+    anthropic_api_key: Optional[str] = None
     tmdb_api_key: Optional[str] = None
+    neo4j_uri: str = "bolt://localhost:7687"
+    neo4j_user: str = "neo4j"
+    neo4j_password: str = "password"
     
     llm: LLMConfig = Field(default_factory=LLMConfig)
     agent: AgentConfig = Field(default_factory=AgentConfig)

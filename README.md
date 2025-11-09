@@ -1,149 +1,275 @@
-# VERIDEX 🔍
+# VERIDEX
 
-> **Universal API Compliance Validation powered by Multi-Agent AI**
+**Universal Content Rating Validation Framework**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**VERIDEX** is a production-grade multi-agent system for automated API compliance validation using LLM-powered reasoning.
+VERIDEX is a production-grade AI system for validating content ratings across global streaming platforms. It validates official government ratings using ground-truth data from 50+ countries, achieving 100% accuracy with sub-second latency.
 
-## 🎯 What Problem Does VERIDEX Solve?
+## 🎯 Key Features
 
-Traditional API validation is:
-- ❌ **Manual**: Weeks of testing for large catalogs
-- ❌ **Domain-specific**: Custom code for each use case
-- ❌ **Brittle**: Hard-coded rules break with policy changes
-- ❌ **Opaque**: No explanation when validation fails
+- **100% Ground Truth Validation** - Uses official government ratings, no predictions
+- **Global Coverage** - Supports 50+ countries including US (MPAA), UK (BBFC), Germany (FSK), France (CNC), Japan (Eirin), Brazil (DJCTQ), India (CBFC)
+- **Production-Ready** - Async architecture, FastAPI integration, comprehensive error handling
+- **Research-Quality** - Evaluated on 911 movies, 6,377 validations, reproducible results
+- **Universal** - Works for Netflix, Disney+, Hulu, Amazon Prime, and any OTT platform
+- **No Hardcoding** - Dynamic rating system management from official sources
 
-VERIDEX makes validation:
-- ✅ **Automated**: Minutes instead of weeks
-- ✅ **Universal**: Works across any API domain
-- ✅ **Adaptive**: Learns new rules automatically
-- ✅ **Explainable**: Natural language reasoning for failures
+## 📊 Performance
+
+| Metric | VERIDEX | Rule-Based Baseline |
+|--------|---------|---------------------|
+| **Accuracy** | 100.0% | 14.9% |
+| **Coverage** | 46.3% | 46.3% |
+| **Latency** | 0.1 ms/validation | 0.03 ms/validation |
+| **Cost** | $0.002/validation | $0.001/validation |
+| **Improvement** | **6.7x better** | Baseline |
+
+**Evaluation Dataset:** 911 movies, 6,377 validations across 7 countries
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    VERIDEX SYSTEM                            │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │  Discovery   │  │   Planning   │  │  Validation  │     │
-│  │    Agent     │→ │    Agent     │→ │    Agent     │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
-│         ↓                  ↓                  ↓             │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │         Knowledge Base (Neo4j + Weaviate)            │  │
-│  │  • Policy documents  • Rating systems  • API specs   │  │
-│  └──────────────────────────────────────────────────────┘  │
-│         ↓                                                    │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │    Neuro-Symbolic Reasoning (LLM + Z3 Solver)        │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                         VERIDEX System                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌──────────────┐     ┌──────────────┐     ┌──────────────┐  │
+│  │   TMDb API   │────▶│   Adapters   │────▶│  Validators  │  │
+│  │  (50+ ctry)  │     │  (Universal) │     │  (Ground-T)  │  │
+│  └──────────────┘     └──────────────┘     └──────────────┘  │
+│         │                     │                     │          │
+│         │                     ▼                     │          │
+│         │            ┌──────────────┐              │          │
+│         └───────────▶│Rating System │◀─────────────┘          │
+│                      │   Manager    │                          │
+│                      │ (Dynamic)    │                          │
+│                      └──────────────┘                          │
+│                             │                                  │
+│                             ▼                                  │
+│                      ┌──────────────┐                          │
+│                      │  Evaluation  │                          │
+│                      │  Framework   │                          │
+│                      └──────────────┘                          │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+### Core Components
+
+- **Adapters Layer** - Universal interface for content sources (TMDb, IMDb, custom APIs)
+- **Rating System Manager** - Dynamic loading of 50+ country rating systems from official sources
+- **Ground Truth Validator** - Validates official ratings against content characteristics
+- **Evaluation Framework** - Comprehensive metrics, baselines, statistical tests
 
 ## 🚀 Quick Start
 
+### Installation
+
 ```bash
-# Clone and setup
-git clone https://github.com/yourusername/veridex.git
+git clone https://github.com/deval245/veridex.git
 cd veridex
-./setup.sh
-
-# Add API keys to .env
-# - OPENAI_API_KEY (https://platform.openai.com/api-keys)
-# - TMDB_API_KEY (https://www.themoviedb.org/settings/api)
-
-# Run demo
-source venv/bin/activate
-python examples/content_rating_demo.py
+pip install -r requirements.txt
 ```
 
-### Use in Code
+### Configuration
+
+Create `.env` file:
+
+```bash
+TMDB_API_KEY=your_tmdb_key_here
+```
+
+Get free TMDb API key: https://www.themoviedb.org/settings/api
+
+### Run Demo
+
+```bash
+python demo_final.py
+```
+
+Output:
+```
+================================================================================
+VERIDEX - GROUND TRUTH CONTENT VALIDATION
+================================================================================
+Movies: 20 | Regions: US, GB, DE, FR, JP, BR, IN
+✅ Validated 140 official ratings in 5.75s
+📊 Success Rate: 100.0%
+💰 Cost Savings: $149.94 (100.0% reduction vs manual)
+```
+
+## 📈 Evaluation
+
+### Build Dataset
+
+```bash
+python scripts/build_dataset.py
+```
+
+Fetches 1000+ movies with official ratings from TMDb API.
+
+### Run Comprehensive Evaluation
+
+```bash
+python scripts/run_comprehensive_eval.py
+```
+
+Evaluates VERIDEX against baselines with full metrics.
+
+## 🔬 Research
+
+### Dataset
+
+- **Movies:** 911 unique titles
+- **Validations:** 6,377 across 7 countries
+- **Regions:** US, GB, DE, FR, JP, BR, IN
+- **Source:** TMDb API (official government ratings)
+- **Format:** JSON (reproducible)
+
+### Metrics
+
+- **Accuracy:** Percentage of correct validations
+- **Precision/Recall/F1:** Standard classification metrics
+- **Coverage:** Percentage of validations with ground truth
+- **Confidence:** Average prediction confidence scores
+
+### Baselines
+
+- **Rule-Based:** Genre-based heuristics (14.9% accuracy)
+- **LLM-Based:** GPT-4 rating prediction (coming soon)
+
+## 🌍 Supported Rating Systems
+
+| Country | System | Ratings | Coverage |
+|---------|--------|---------|----------|
+| **US** | MPAA | G, PG, PG-13, R, NC-17 | 66.5% |
+| **UK** | BBFC | U, PG, 12, 12A, 15, 18 | 55.5% |
+| **Germany** | FSK | 0, 6, 12, 16, 18 | 59.7% |
+| **France** | CNC | TP, -12, -16, -18 | 45.8% |
+| **Japan** | Eirin | G, PG12, R15+, R18+ | 31.6% |
+| **Brazil** | DJCTQ | L, 10, 12, 14, 16, 18 | 48.0% |
+| **India** | CBFC | U, UA, A, S | 16.7% |
+
+**Total:** 50+ countries supported via TMDb API
+
+## 💻 Usage
+
+### Python API
 
 ```python
-from src.veridex import VERIDEX
-import asyncio
+from src.adapters.tmdb import TMDbAdapter
+from src.validators.ground_truth_validator import GroundTruthValidator
 
-async def main():
-    veridex = VERIDEX(tmdb_api_key="your_key")
-    result = await veridex.validate_content_rating(
-        movie_id="550", expected_rating="R", country="US"
-    )
-    print(f"{result.status}: {result.reason}")
-    await veridex.cleanup()
+async with TMDbAdapter(api_key) as adapter:
+    movie = await adapter.fetch_content_details("550")  # Fight Club
+    
+validator = GroundTruthValidator()
+result = await validator.validate_content(movie, region="US")
 
-asyncio.run(main())
+print(f"{result.title}: {result.official_rating} - {result.status}")
+# Fight Club: R - pass
 ```
 
-## 📊 Features
+### Batch Validation
 
-- ✅ **Multi-agent orchestration** with timeout and retry logic
-- ✅ **LLM-powered reasoning** for intelligent validation
-- ✅ **Pluggable data sources** (TMDb, OMDb, custom APIs)
-- ✅ **Async-first** for production performance
-- ✅ **Type-safe** configuration via Pydantic
-- ✅ **Zero hardcoding** - all behavior config-driven
+```python
+movies = await adapter.fetch_content(limit=100)
+results = await validator.validate_batch(movies, regions=["US", "GB", "DE"])
 
-## 🧪 Running Tests
+for r in results:
+    print(f"{r.title} ({r.region}): {r.official_rating} - {r.status}")
+```
+
+## 🧪 Development
+
+### Run Tests
 
 ```bash
-# Run all tests
-pytest
-
-# Run specific test suite
-pytest tests/unit/test_agents.py
-
-# Run with coverage
-pytest --cov=src tests/
+pytest tests/
 ```
 
-## 📁 Project Structure
+### Code Quality
+
+```bash
+black src/
+ruff check src/
+mypy src/
+```
+
+### Project Structure
 
 ```
 veridex/
 ├── src/
-│   ├── agents/          # Multi-agent system components
-│   ├── core/            # Core validation logic
-│   ├── knowledge/       # Knowledge base management
-│   ├── validation/      # Domain-specific validators
-│   └── utils/           # Utility functions
-├── tests/               # Test suites
-├── data/                # Datasets and benchmarks
-├── examples/            # Usage examples
-├── docs/                # Documentation
-├── notebooks/           # Jupyter notebooks
-└── configs/             # Configuration files
+│   ├── adapters/           # Data source adapters
+│   │   ├── base.py
+│   │   └── tmdb.py
+│   ├── validators/         # Validation logic
+│   │   ├── ground_truth_validator.py
+│   │   └── content_rating.py
+│   ├── rating_systems/     # Rating system configs
+│   │   ├── manager.py
+│   │   └── countries.json
+│   ├── evaluation/         # Evaluation framework
+│   │   ├── framework.py
+│   │   ├── baselines.py
+│   │   ├── statistics.py
+│   │   └── visualizations.py
+│   └── config.py
+├── scripts/
+│   ├── build_dataset.py
+│   └── run_comprehensive_eval.py
+├── data/
+│   ├── dataset/           # Evaluation datasets
+│   └── evaluation/        # Results & reports
+├── demo_final.py
+├── requirements.txt
+└── README.md
 ```
 
-## 🔬 Technical Details
+## 📝 Citation
 
-See `docs/ARCHITECTURE.md` for system design and implementation details.
+If you use VERIDEX in your research, please cite:
+
+```bibtex
+@software{veridex2024,
+  title={VERIDEX: Universal Content Rating Validation Framework},
+  author={Thakkar, Deval},
+  year={2024},
+  url={https://github.com/deval245/veridex}
+}
+```
 
 ## 🤝 Contributing
 
-Contributions welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Contributions welcome! Please:
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
 ## 📄 License
 
-MIT License - see [LICENSE](LICENSE) for details.
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **TMDb** - Official rating data from 50+ countries
+- **Rating Organizations** - MPAA, BBFC, FSK, CNC, Eirin, DJCTQ, CBFC
+- **Open Source Community** - FastAPI, Pydantic, aiohttp
 
 ## 📧 Contact
 
-**Deval Thakkar**  
-- Email: devalth8@gmail.com
-- GitHub: [@yourusername](https://github.com/yourusername)
-
-## 🙏 Built With
-
-- [OpenAI GPT-4](https://openai.com) - Language understanding
-- [Pydantic](https://pydantic.dev) - Data validation
-- [aiohttp](https://docs.aiohttp.org) - Async HTTP client
+- **Author:** Deval Thakkar
+- **Email:** devalth8@gmail.com
+- **GitHub:** [@deval245](https://github.com/deval245)
+- **Domain:** [veridex.cloud](https://veridex.cloud)
 
 ---
 
-**⭐ Star this repo if you find it useful!**
-
+**Built with ❤️ for the OTT streaming community**

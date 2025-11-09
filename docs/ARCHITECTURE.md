@@ -34,7 +34,7 @@
 │                    Knowledge Layer                               │
 │  ┌─────────────┐  ┌─────────────┐  ┌──────────────┐           │
 │  │   Graph DB  │  │  Vector DB  │  │    Cache     │           │
-│  │   (Neo4j)   │  │ (Weaviate)  │  │   (Redis)    │           │
+│  │   (Neo4j)   │  │   (FAISS)   │  │   (Redis)    │           │
 │  └─────────────┘  └─────────────┘  └──────────────┘           │
 └────────────────────────────┬────────────────────────────────────┘
                              │
@@ -160,8 +160,8 @@ knowledge_base:
     type: neo4j
     config: ${NEO4J_CONFIG}
   vector:
-    type: weaviate
-    config: ${WEAVIATE_CONFIG}
+    type: faiss
+    config: ${FAISS_CONFIG}
   cache:
     type: redis
     ttl_seconds: 3600
@@ -208,7 +208,7 @@ Vertical Scaling:
 
 ### Storage
 - **Graph**: Neo4j 5.x
-- **Vector**: Weaviate
+- **Vector**: FAISS (Meta AI - production-grade)
 - **Cache**: Redis 7.x
 - **Blob**: S3/compatible
 

@@ -1,0 +1,340 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Global content rating systems from official sources",
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-11-08",
+    "data_license": "Public Domain (government data)",
+    "sources": [
+      "TMDb API (primary)",
+      "Official government film classification boards",
+      "International Age Rating Coalition (IARC)"
+    ],
+    "disclaimer": "Rating systems are compiled from official public sources. Users should verify against official sources for critical applications."
+  },
+  "systems": {
+    "US": {
+      "country_name": "United States",
+      "system_name": "MPAA",
+      "organization": "Motion Picture Association",
+      "official_url": "https://www.filmratings.com",
+      "last_updated": "2024-11-08",
+      "data_source": "filmratings.com",
+      "ratings": [
+        {
+          "code": "G",
+          "description": "General Audiences - All ages admitted",
+          "min_age": 0,
+          "guidance": "Nothing that would offend parents for viewing by children",
+          "metadata": {"icon": "G", "color": "green"}
+        },
+        {
+          "code": "PG",
+          "description": "Parental Guidance Suggested",
+          "min_age": 0,
+          "guidance": "Some material may not be suitable for children",
+          "metadata": {"icon": "PG", "color": "yellow"}
+        },
+        {
+          "code": "PG-13",
+          "description": "Parents Strongly Cautioned",
+          "min_age": 13,
+          "guidance": "Some material may be inappropriate for children under 13",
+          "metadata": {"icon": "PG-13", "color": "orange"}
+        },
+        {
+          "code": "R",
+          "description": "Restricted",
+          "min_age": 17,
+          "guidance": "Under 17 requires accompanying parent or adult guardian",
+          "metadata": {"icon": "R", "color": "red"}
+        },
+        {
+          "code": "NC-17",
+          "description": "Adults Only",
+          "min_age": 18,
+          "guidance": "No one 17 and under admitted",
+          "metadata": {"icon": "NC-17", "color": "darkred"}
+        }
+      ]
+    },
+    "GB": {
+      "country_name": "United Kingdom",
+      "system_name": "BBFC",
+      "organization": "British Board of Film Classification",
+      "official_url": "https://www.bbfc.co.uk",
+      "last_updated": "2024-11-08",
+      "data_source": "bbfc.co.uk",
+      "ratings": [
+        {
+          "code": "U",
+          "description": "Universal - Suitable for all",
+          "min_age": 0,
+          "guidance": "Should be suitable for audiences aged four years and over",
+          "metadata": {}
+        },
+        {
+          "code": "PG",
+          "description": "Parental Guidance",
+          "min_age": 0,
+          "guidance": "General viewing, but some scenes may be unsuitable for young children",
+          "metadata": {}
+        },
+        {
+          "code": "12A",
+          "description": "12A",
+          "min_age": 12,
+          "guidance": "Cinema release suitable for 12 years and over",
+          "metadata": {}
+        },
+        {
+          "code": "12",
+          "description": "12",
+          "min_age": 12,
+          "guidance": "Video release suitable only for persons of 12 years and over",
+          "metadata": {}
+        },
+        {
+          "code": "15",
+          "description": "15",
+          "min_age": 15,
+          "guidance": "Suitable only for 15 years and over",
+          "metadata": {}
+        },
+        {
+          "code": "18",
+          "description": "18",
+          "min_age": 18,
+          "guidance": "Suitable only for adults",
+          "metadata": {}
+        },
+        {
+          "code": "R18",
+          "description": "Restricted 18",
+          "min_age": 18,
+          "guidance": "To be supplied only in licensed sex shops to adults of not less than 18 years",
+          "metadata": {}
+        }
+      ]
+    },
+    "DE": {
+      "country_name": "Germany",
+      "system_name": "FSK",
+      "organization": "Freiwillige Selbstkontrolle der Filmwirtschaft",
+      "official_url": "https://www.fsk.de",
+      "last_updated": "2024-11-08",
+      "data_source": "fsk.de",
+      "ratings": [
+        {
+          "code": "0",
+          "description": "FSK 0 - Approved without age restriction",
+          "min_age": 0,
+          "guidance": "All ages",
+          "metadata": {}
+        },
+        {
+          "code": "6",
+          "description": "FSK 6 - Approved for ages 6 and older",
+          "min_age": 6,
+          "guidance": "Suitable for children aged 6 and above",
+          "metadata": {}
+        },
+        {
+          "code": "12",
+          "description": "FSK 12 - Approved for ages 12 and older",
+          "min_age": 12,
+          "guidance": "Suitable for children aged 12 and above",
+          "metadata": {}
+        },
+        {
+          "code": "16",
+          "description": "FSK 16 - Approved for ages 16 and older",
+          "min_age": 16,
+          "guidance": "Suitable for those aged 16 and above",
+          "metadata": {}
+        },
+        {
+          "code": "18",
+          "description": "FSK 18 - Approved for adults only",
+          "min_age": 18,
+          "guidance": "Suitable only for adults",
+          "metadata": {}
+        }
+      ]
+    },
+    "FR": {
+      "country_name": "France",
+      "system_name": "CNC",
+      "organization": "Centre national du cinéma et de l'image animée",
+      "official_url": "https://www.cnc.fr",
+      "last_updated": "2024-11-08",
+      "data_source": "cnc.fr",
+      "ratings": [
+        {
+          "code": "TP",
+          "description": "Tous publics - All audiences",
+          "min_age": 0,
+          "guidance": "Suitable for all ages",
+          "metadata": {}
+        },
+        {
+          "code": "10",
+          "description": "Déconseillé aux moins de 10 ans",
+          "min_age": 10,
+          "guidance": "Not recommended for children under 10",
+          "metadata": {}
+        },
+        {
+          "code": "12",
+          "description": "Interdit aux moins de 12 ans",
+          "min_age": 12,
+          "guidance": "Prohibited for children under 12",
+          "metadata": {}
+        },
+        {
+          "code": "16",
+          "description": "Interdit aux moins de 16 ans",
+          "min_age": 16,
+          "guidance": "Prohibited for children under 16",
+          "metadata": {}
+        },
+        {
+          "code": "18",
+          "description": "Interdit aux moins de 18 ans",
+          "min_age": 18,
+          "guidance": "Prohibited for children under 18",
+          "metadata": {}
+        }
+      ]
+    },
+    "JP": {
+      "country_name": "Japan",
+      "system_name": "Eirin",
+      "organization": "Film Classification and Rating Organization",
+      "official_url": "https://www.eirin.jp",
+      "last_updated": "2024-11-08",
+      "data_source": "eirin.jp",
+      "ratings": [
+        {
+          "code": "G",
+          "description": "General Audiences",
+          "min_age": 0,
+          "guidance": "Suitable for all ages",
+          "metadata": {}
+        },
+        {
+          "code": "PG12",
+          "description": "Parental Guidance requested for young people under 12",
+          "min_age": 12,
+          "guidance": "Parental guidance suggested for children under 12",
+          "metadata": {}
+        },
+        {
+          "code": "R15+",
+          "description": "Restricted to those 15 years and older",
+          "min_age": 15,
+          "guidance": "Restricted to 15 and over",
+          "metadata": {}
+        },
+        {
+          "code": "R18+",
+          "description": "Restricted to those 18 years and older",
+          "min_age": 18,
+          "guidance": "Restricted to 18 and over",
+          "metadata": {}
+        }
+      ]
+    },
+    "BR": {
+      "country_name": "Brazil",
+      "system_name": "ClassInd",
+      "organization": "Departamento de Justiça, Classificação, Títulos e Qualificação",
+      "official_url": "https://www.gov.br/mj",
+      "last_updated": "2024-11-08",
+      "data_source": "gov.br",
+      "ratings": [
+        {
+          "code": "L",
+          "description": "Livre - All ages",
+          "min_age": 0,
+          "guidance": "Content suitable for all ages",
+          "metadata": {}
+        },
+        {
+          "code": "10",
+          "description": "Não recomendado para menores de 10 anos",
+          "min_age": 10,
+          "guidance": "Not recommended for children under 10",
+          "metadata": {}
+        },
+        {
+          "code": "12",
+          "description": "Não recomendado para menores de 12 anos",
+          "min_age": 12,
+          "guidance": "Not recommended for children under 12",
+          "metadata": {}
+        },
+        {
+          "code": "14",
+          "description": "Não recomendado para menores de 14 anos",
+          "min_age": 14,
+          "guidance": "Not recommended for children under 14",
+          "metadata": {}
+        },
+        {
+          "code": "16",
+          "description": "Não recomendado para menores de 16 anos",
+          "min_age": 16,
+          "guidance": "Not recommended for children under 16",
+          "metadata": {}
+        },
+        {
+          "code": "18",
+          "description": "Não recomendado para menores de 18 anos",
+          "min_age": 18,
+          "guidance": "Not recommended for children under 18",
+          "metadata": {}
+        }
+      ]
+    },
+    "IN": {
+      "country_name": "India",
+      "system_name": "CBFC",
+      "organization": "Central Board of Film Certification",
+      "official_url": "https://www.cbfcindia.gov.in",
+      "last_updated": "2024-11-08",
+      "data_source": "cbfcindia.gov.in",
+      "ratings": [
+        {
+          "code": "U",
+          "description": "Unrestricted Public Exhibition",
+          "min_age": 0,
+          "guidance": "Suitable for all ages",
+          "metadata": {}
+        },
+        {
+          "code": "UA",
+          "description": "Unrestricted Public Exhibition - Parental Discretion",
+          "min_age": 0,
+          "guidance": "Parental discretion required for children below 12",
+          "metadata": {}
+        },
+        {
+          "code": "A",
+          "description": "Restricted to adults",
+          "min_age": 18,
+          "guidance": "Suitable only for adults",
+          "metadata": {}
+        },
+        {
+          "code": "S",
+          "description": "Restricted to specialized audiences",
+          "min_age": 18,
+          "guidance": "Restricted to members of specific professions or classes",
+          "metadata": {}
+        }
+      ]
+    }
+  }
+}
+

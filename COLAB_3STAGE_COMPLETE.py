@@ -496,9 +496,9 @@ class ThreeStageTrainer:
         }
     
     def train_stage(self, stage: int, epochs: int, checkpoint_path: Path = None):
-        print(f"\n{'═' * 80}")
+        print("\n" + "=" * 80)
         print(f"STAGE {stage} TRAINING")
-        print(f"{'═' * 80}\n")
+        print("=" * 80 + "\n")
         
         if checkpoint_path and checkpoint_path.exists():
             print(f"Loading checkpoint: {checkpoint_path}")
@@ -517,7 +517,7 @@ class ThreeStageTrainer:
             
             epoch_time = time.time() - start_time
             
-            print(f"\n{'─' * 80}")
+            print("\n" + "-" * 80)
             print(f"Epoch {epoch}/{epochs} Summary:")
             print(f"  Train: Loss={train_metrics['loss']:.4f} | Acc={train_metrics['accuracy']:.2f}%")
             print(f"  Val:   Loss={val_metrics['loss']:.4f} | Acc={val_metrics['accuracy']:.2f}%")
@@ -531,16 +531,16 @@ class ThreeStageTrainer:
                 
                 save_path = self.config.save_dir / f"stage{stage}_best.pt"
                 torch.save(self.model.state_dict(), save_path)
-                print(f"  ✓ NEW BEST! Saved to {save_path} (+{improvement:.2f}%)")
+                print(f"  >> NEW BEST! Saved to {save_path} (+{improvement:.2f}%)")
             else:
                 self.patience_counter += 1
-                print(f"  ⏳ Patience: {self.patience_counter}/{self.config.early_stopping_patience}")
+                print(f"  >> Patience: {self.patience_counter}/{self.config.early_stopping_patience}")
                 
                 if self.patience_counter >= self.config.early_stopping_patience:
-                    print(f"\n⚠ Early stopping triggered at epoch {epoch}")
+                    print(f"\n>> Early stopping triggered at epoch {epoch}")
                     break
             
-            print(f"{'─' * 80}\n")
+            print("-" * 80 + "\n")
         
         print(f"\nStage {stage} Complete! Best Val Acc: {self.best_val_acc:.2f}%\n")
         return self.config.save_dir / f"stage{stage}_best.pt"
@@ -601,9 +601,9 @@ def main():
     trainer.patience_counter = 0
     stage3_ckpt = trainer.train_stage(3, config.stage3_epochs, stage2_ckpt)
     
-    print(f"\n{'═' * 80}")
+    print("\n" + "=" * 80)
     print("FINAL EVALUATION")
-    print(f"{'═' * 80}\n")
+    print("=" * 80 + "\n")
     
     model.load_state_dict(torch.load(stage3_ckpt))
     test_metrics = trainer.validate()
@@ -611,7 +611,7 @@ def main():
     print(f"Final Test Accuracy: {test_metrics['accuracy']:.2f}%")
     print(f"Final Test Loss: {test_metrics['loss']:.4f}")
     print(f"\nAll checkpoints saved to: {config.save_dir}")
-    print(f"{'═' * 80}\n")
+    print("=" * 80 + "\n")
 
 
 if __name__ == "__main__":

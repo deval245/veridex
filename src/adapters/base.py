@@ -56,3 +56,12 @@ class ContentAdapter(ABC):
         region_map = rating_map.get(region, {})
         return region_map.get(rating, rating)
 
+
+
+
+
+
+
+
+
+

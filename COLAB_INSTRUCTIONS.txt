@@ -1,0 +1,53 @@
+═══════════════════════════════════════════════════════════════════
+VERIDEX MODEL v2 - COLAB TRAINING INSTRUCTIONS
+═══════════════════════════════════════════════════════════════════
+
+📤 STEP 1: UPLOAD FILES TO COLAB
+─────────────────────────────────────────────────────────────────
+1. Open: https://colab.research.google.com
+2. Upload: COLAB_V2_PRODUCTION_90_PERCENT.py
+3. Upload: multimodal_expanded_coverage.json to /content/
+
+OR upload dataset to Google Drive:
+   !cp /content/drive/MyDrive/multimodal_expanded_coverage.json /content/
+
+▶️  STEP 2: RUN TRAINING
+─────────────────────────────────────────────────────────────────
+1. Click: Runtime → Run all (or Ctrl+F9)
+2. Keep browser tab active (prevent disconnect)
+
+🔒 STEP 3: PREVENT DISCONNECT
+─────────────────────────────────────────────────────────────────
+Open browser console (F12) and paste:
+
+setInterval(() => {
+    console.log("🟢 Active - Model v2 Training");
+    document.querySelector('colab-toolbar-button#connect')?.click();
+}, 60000);
+
+⏱️  TRAINING TIME
+─────────────────────────────────────────────────────────────────
+Expected: 3-4 hours on A100 GPU
+Target: 90%+ accuracy
+Coverage: 65 countries, 65+ rating systems
+
+📊 EXPECTED RESULTS
+─────────────────────────────────────────────────────────────────
+✅ 85-92% test accuracy
+✅ 65 countries covered
+✅ 60K+ training samples
+✅ Production-ready for deployment
+✅ ArXiv paper ready
+
+💾 OUTPUT
+─────────────────────────────────────────────────────────────────
+Model saved to:
+/content/drive/MyDrive/veridex_v2_production/best_model_v2.pt
+
+Contains:
+- Model weights
+- Label mappings (id_to_label, label_to_id)
+- Training history
+- Configuration
+
+═══════════════════════════════════════════════════════════════════

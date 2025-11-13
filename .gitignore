@@ -99,13 +99,40 @@ Thumbs.db
 **/secrets.yaml
 **/*_secret.py
 
-# Large files
+# Large files (archives)
 *.gz
 *.zip
 *.tar
 *.7z
 *.dump
 dump.rdb
+
+# ═══════════════════════════════════════════════════════════════════
+# VERIDEX SPECIFIC - LARGE FILES (DO NOT PUSH TO GITHUB)
+# ═══════════════════════════════════════════════════════════════════
+
+# Dataset files (too large for GitHub)
+data/*.json
+data/dataset/*.json
+data/large_dataset/*.json
+!data/rating_systems/*.json
+
+# Image files (322 MB+)
+data/images/
+data/images_48k/
+data/*.zip
+*.zip
+
+# Evaluation reports
+data/evaluation/*.json
+data/demo_results/
+
+# Old checkpoints
+data/dataset/checkpoint*.json
+
+# Verification/audit reports (optional, can be regenerated)
+VERIFICATION_REPORT.md
+FINAL_FILES_LIST.md
 
 # Documentation build
 docs/_build/

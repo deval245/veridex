@@ -1,16 +1,46 @@
 """
 VERIDEX-X: Cultural Embeddings Training Script
 Production-grade training for multi-country content rating prediction.
+
+SETUP INSTRUCTIONS:
+1. Mount Google Drive
+2. Clone repository (first time only)
+3. Run this script
+
+Example:
+    from google.colab import drive
+    drive.mount('/content/drive')
+    
+    # First time only:
+    !git clone https://github.com/deval245/veridex.git /content/veridex
+    
+    # Run training:
+    %run COLAB_CULTURAL_EMBEDDINGS.py
 """
 
 import sys
+import os
 import torch
 from pathlib import Path
 from transformers import AutoTokenizer
 import json
 
+# Check if repo exists
+if not os.path.exists('/content/veridex'):
+    print("=" * 80)
+    print("ERROR: Repository not found!")
+    print("=" * 80)
+    print()
+    print("Please run:")
+    print("  !git clone https://github.com/deval245/veridex.git /content/veridex")
+    print()
+    print("Then run this script again.")
+    print("=" * 80)
+    sys.exit(1)
+
 # Setup paths
 sys.path.insert(0, '/content/veridex')
+
 from src.models.architectures.veridex_cultural import create_model
 from src.data.dataset import CulturalRatingDataset
 from src.training.trainer import Trainer

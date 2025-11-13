@@ -72,7 +72,7 @@ class Trainer:
         self.patience = 0
         self.max_patience = 20
         
-    def train_epoch(self, epoch: int) -> Dict[str, float]:
+    def train_epoch(self, epoch: int, total_epochs: int) -> Dict[str, float]:
         """Train for one epoch."""
         self.model.train()
         
@@ -83,6 +83,11 @@ class Trainer:
         total = 0
         
         self.optimizer.zero_grad()
+        start_time = time.time()
+        
+        print("=" * 80)
+        print(f"Epoch {epoch}/{total_epochs}")
+        print("=" * 80)
         
         pbar = tqdm(self.train_loader, desc=f"Epoch {epoch}")
         
@@ -148,16 +153,21 @@ class Trainer:
             total += labels.size(0)
             
             # Update progress
+            current_lr = self.optimizer.param_groups[0]['lr']
             pbar.set_postfix({
                 'loss': f"{total_loss / (batch_idx + 1):.4f}",
-                'acc': f"{100 * correct / total:.2f}%"
+                'acc': f"{100 * correct / total:.2f}%",
+                'lr': f"{current_lr:.2e}"
             })
+        
+        epoch_time = time.time() - start_time
         
         return {
             'loss': total_loss / len(self.train_loader),
             'focal_loss': focal_loss_sum / len(self.train_loader),
             'triplet_loss': triplet_loss_sum / len(self.train_loader),
-            'accuracy': 100 * correct / total
+            'accuracy': 100 * correct / total,
+            'time': epoch_time
         }
     
     @torch.no_grad()
@@ -193,9 +203,19 @@ class Trainer:
         """Train for multiple epochs with early stopping."""
         history = {'train': [], 'val': []}
         
+        print()
+        print("=" * 80)
+        print("TRAINING START")
+        print("=" * 80)
+        print(f"Total epochs: {epochs}")
+        print(f"Early stopping patience: {self.max_patience}")
+        print(f"Device: {self.device}")
+        print("=" * 80)
+        print()
+        
         for epoch in range(1, epochs + 1):
             # Train
-            train_metrics = self.train_epoch(epoch)
+            train_metrics = self.train_epoch(epoch, epochs)
             history['train'].append(train_metrics)
             
             # Validate
@@ -203,28 +223,50 @@ class Trainer:
             history['val'].append(val_metrics)
             
             # Print summary
-            print(f"\nEpoch {epoch}/{epochs}")
+            print()
+            print(f"Summary:")
             print(f"  Train Loss: {train_metrics['loss']:.4f} | Acc: {train_metrics['accuracy']:.2f}%")
+            print(f"  Focal Loss: {train_metrics['focal_loss']:.4f} | Triplet: {train_metrics['triplet_loss']:.4f}")
             print(f"  Val   Loss: {val_metrics['loss']:.4f} | Acc: {val_metrics['accuracy']:.2f}%")
+            print(f"  Gap: {abs(train_metrics['accuracy'] - val_metrics['accuracy']):.2f}%")
+            print(f"  Time: {train_metrics['time']:.1f}s")
             
             # Save best model
             if val_metrics['accuracy'] > self.best_val_acc:
+                improvement = val_metrics['accuracy'] - self.best_val_acc
                 self.best_val_acc = val_metrics['accuracy']
                 self.patience = 0
                 self._save_checkpoint('best_model.pt', epoch, val_metrics)
-                print(f"  ✅ New best! Saved checkpoint.")
+                print(f"  💾 NEW BEST! Val Acc: {self.best_val_acc:.2f}% (+{improvement:.2f}%)")
             else:
                 self.patience += 1
                 print(f"  ⏳ Patience: {self.patience}/{self.max_patience}")
             
+            print("=" * 80)
+            print()
+            
             # Early stopping
             if self.patience >= self.max_patience:
-                print(f"\n⚠️ Early stopping at epoch {epoch}")
+                print()
+                print("=" * 80)
+                print(f"⚠️ Early stopping triggered at epoch {epoch}")
+                print("=" * 80)
                 break
         
         # Save training history
         with open(self.save_dir / 'history.json', 'w') as f:
             json.dump(history, f, indent=2)
+        
+        # Final summary
+        print()
+        print("=" * 80)
+        print("TRAINING COMPLETE")
+        print("=" * 80)
+        print(f"Best validation accuracy: {self.best_val_acc:.2f}%")
+        print(f"Total epochs trained: {len(history['train'])}")
+        print(f"Model saved: {self.save_dir / 'best_model.pt'}")
+        print("=" * 80)
+        print()
         
         return history
     

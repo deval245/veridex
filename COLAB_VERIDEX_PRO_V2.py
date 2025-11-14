@@ -64,23 +64,39 @@ def setup_environment():
     os.system('pip install -q transformers accelerate sentencepiece 2>&1 | grep -v "already satisfied" || true')
     print("✓ Dependencies installed")
     
-    # Verify data file
-    print("\n📊 Verifying data file...")
-    data_path = "/content/drive/MyDrive/veridex_data/multimodal_expanded_coverage.json"
-    if not os.path.exists(data_path):
-        print(f"\n❌ ERROR: Data file not found at {data_path}")
-        print("Please upload 'multimodal_expanded_coverage.json' to:")
-        print("  My Drive/veridex_data/")
+    # Find data file (search common locations)
+    print("\n📊 Searching for data file...")
+    data_path = None
+    
+    search_locations = [
+        "/content/drive/MyDrive/veridex_data/multimodal_expanded_coverage.json",
+        "/content/drive/MyDrive/multimodal_expanded_coverage.json",
+        "/content/drive/MyDrive/Colab Notebooks/multimodal_expanded_coverage.json",
+        "/content/drive/MyDrive/veridex/data/multimodal_expanded_coverage.json",
+    ]
+    
+    for path in search_locations:
+        if os.path.exists(path):
+            data_path = path
+            print(f"✓ Data file found at: {path}")
+            break
+    
+    if data_path is None:
+        print("\n❌ ERROR: Data file 'multimodal_expanded_coverage.json' not found!")
+        print("\nSearched in:")
+        for loc in search_locations:
+            print(f"  • {loc}")
+        print("\nPlease upload the file to one of these locations.")
         sys.exit(1)
     
     file_size = os.path.getsize(data_path) / (1024 * 1024)
-    print(f"✓ Data file found: {file_size:.1f} MB")
+    print(f"✓ File size: {file_size:.1f} MB")
     
     print("\n" + "="*80)
     print("SETUP COMPLETE - STARTING TRAINING")
     print("="*80)
     
-    return True
+    return data_path
 
 # ============================================================================
 # CONFIGURATION
@@ -717,12 +733,14 @@ class ProductionTrainer:
 def main():
     """Main execution function"""
     # Setup environment
-    if not setup_environment():
+    data_path = setup_environment()
+    if not data_path:
         print("Setup failed. Please check errors above.")
         return
     
     # Configuration
     config = Config()
+    config.data_path = data_path  # Use the found data path
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     # Country manager

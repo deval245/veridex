@@ -682,12 +682,13 @@ class ProductionTrainer:
                 self.best_val_acc = val_acc
                 self.patience_counter = 0
                 
-                checkpoint_path = os.path.join(self.config.output_dir, 'best_model.pt')
+                checkpoint_path = os.path.join(self.config.output_dir, 'veridex_pro_v2_hierarchical_best.pt')
                 torch.save({
                     'epoch': epoch,
                     'model_state_dict': self.model.state_dict(),
                     'optimizer_state_dict': self.optimizer.state_dict(),
                     'val_acc': val_acc,
+                    'architecture': 'VERIDEXProV2_HierarchicalCultural',
                 }, checkpoint_path)
                 
                 print(f"  ✓ NEW BEST! Saved to {checkpoint_path} (+{improvement:.2f}%)")

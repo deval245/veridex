@@ -137,13 +137,47 @@ def load_and_prepare_data(json_path):
     with open(json_path) as f:
         raw_data = json.load(f)
     
+    # Handle different JSON structures
+    if isinstance(raw_data, dict):
+        # If it's a dict, try common keys
+        for key in ['movies', 'data', 'samples', 'records']:
+            if key in raw_data:
+                raw_data = raw_data[key]
+                print(f"✓ Extracted data from '{key}' field")
+                break
+        
+        # If still dict after trying keys, check if values are the movie list
+        if isinstance(raw_data, dict):
+            values = list(raw_data.values())
+            if values and isinstance(values[0], dict):
+                raw_data = values
+                print(f"✓ Extracted {len(raw_data)} movies from dict values")
+    
+    # Validate we have a list
+    if not isinstance(raw_data, list):
+        print(f"\n❌ ERROR: Expected list of movies, got {type(raw_data)}")
+        print(f"   JSON structure: {list(raw_data.keys()) if isinstance(raw_data, dict) else 'not a dict'}")
+        raise ValueError("Invalid JSON structure")
+    
     print(f"✓ Loaded {len(raw_data)} raw samples")
+    
+    # Validate first sample
+    if len(raw_data) > 0:
+        first_sample = raw_data[0]
+        if not isinstance(first_sample, dict):
+            print(f"\n❌ ERROR: Expected dict for movie, got {type(first_sample)}")
+            print(f"   First item: {first_sample}")
+            raise ValueError("Invalid movie format")
+        print(f"✓ Sample fields: {list(first_sample.keys())[:5]}...")
     
     # Extract ratings
     all_ratings = []
     all_countries = []
     
     for movie in raw_data:
+        if not isinstance(movie, dict):
+            continue
+            
         ratings = movie.get('ratings', {})
         if isinstance(ratings, dict):
             rating = ratings.get('rating', 'Unknown')
@@ -409,6 +443,16 @@ def main():
         return
     
     print(f"✓ Data: {data_path}")
+    
+    # Quick diagnostic
+    import os
+    file_size_mb = os.path.getsize(data_path) / (1024 * 1024)
+    print(f"✓ File size: {file_size_mb:.1f} MB")
+    
+    if file_size_mb < 10:
+        print(f"\n⚠️  WARNING: File is only {file_size_mb:.1f} MB")
+        print(f"   Expected ~50-100 MB for 60K samples")
+        print(f"   You may have uploaded the wrong file")
     
     # Load data
     raw_data, label_encoder, label_decoder, country_encoder, country_decoder = load_and_prepare_data(data_path)

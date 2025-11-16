@@ -202,4 +202,4 @@ VERIDEX Research License - See [LICENSE](LICENSE)
 
 ---
 
-**Last Updated**: November 2024 | **Version**: V9.1 | **Status**: ✅ Publication-Ready
+**Last Updated**: November 16, 2025 | **Version**: V9.1 | **Status**: ✅ Publication-Ready

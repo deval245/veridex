@@ -6,7 +6,7 @@ authors:
     orcid: "https://orcid.org/0000-0000-0000-0000"  # Add your ORCID if available
 title: "VERIDEX V9.1: Policy-Latent Diffusion Network for Multi-Country Content Rating Prediction"
 version: "9.1"
-date-released: 2024-11-16
+date-released: 2025-11-16
 url: "https://github.com/deval245/veridex"
 repository-code: "https://github.com/deval245/veridex"
 license: "VERIDEX Research License - See LICENSE file for details"

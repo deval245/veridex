@@ -48,7 +48,7 @@ This repository does **NOT** include the training dataset (`multimodal_expanded_
 ### Option 2: Request from Author
 
 For research purposes, you may contact the author:
-- **Email**: deval.thakkar.research@protonmail.com
+- **Email**: devalth8@veridex.cloud | devalth8@gmail.com
 - **Subject**: "VERIDEX V9.1 Dataset Request - Research Use"
 
 **Note**: Dataset sharing is subject to:

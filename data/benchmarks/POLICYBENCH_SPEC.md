@@ -410,7 +410,7 @@ We welcome contributions to PolicyBench!
 ## 📧 Contact
 
 **PolicyBench Maintainers:**
-- Deval Thakkar (devalth8@gmail.com)
+- Deval Thakkar (devalth8@veridex.cloud | devalth8@gmail.com)
 - VERIDEX Project (https://veridex.cloud)
 
 **Reporting Issues:**

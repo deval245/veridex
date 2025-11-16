@@ -140,6 +140,28 @@ python ABLATION_STUDIES_V9.1.py    # Ablation studies
 
 ---
 
+## Limitations
+
+1. **Text-Only Modality**: Model processes only text (title + synopsis), missing visual/audio cues that influence ratings (e.g., graphic violence in trailers, explicit imagery).
+
+2. **Fixed Policy Factors**: The 6 policy factors (violence, sexual, profanity, fear, drugs, themes) are predefined and may not capture all rating nuances or cultural-specific concerns.
+
+3. **Class Imbalance**: Severe imbalance (29:1 ratio) between common and rare rating classes leads to lower accuracy on underrepresented classes (e.g., NC-17, X ratings).
+
+4. **Cultural Generalization**: Trained on 65 countries; performance may degrade for countries not in training data or with different rating philosophies.
+
+5. **Temporal Bias**: Dataset spans 1980-2024 with recent movies over-represented, potentially biasing predictions toward contemporary rating standards.
+
+6. **Uncertainty Ensemble**: Uncertainty-weighted ensemble shows no improvement over fixed 50/50 weights in current configuration, suggesting limited benefit from learned uncertainty.
+
+7. **Interpretability Trade-off**: While policy factors provide interpretability, they may oversimplify complex rating decisions that involve multiple interacting factors.
+
+8. **Dataset Dependency**: Performance depends on TMDb metadata quality; missing or inaccurate synopses can degrade predictions.
+
+**Detailed analysis**: See [MODEL_CARD.md](MODEL_CARD.md)
+
+---
+
 ## Citation
 
 ```bibtex

@@ -1,22 +1,99 @@
-MIT License
+VERIDEX Research License  
 
-Copyright (c) 2024 Deval Thakkar
+Version 1.0 — Copyright © 2024–present  
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Author: Deval Thakkar. All Rights Reserved.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 
+This repository provides high-level, conceptual reference code for academic
+
+reading, review, and citation. It is not open-source software and may not be
+
+used as a basis for model training or commercial development.
+
+
+
+No training data, model weights, or TMDb-derived metadata are included in this
+
+repository. Any external data must be obtained independently and in compliance
+
+with its original terms of use.
+
+
+
+──────────────────────────────────────────────────────────────────────────────
+
+PROHIBITED WITHOUT PERMISSION
+
+The following actions are strictly prohibited unless explicit written
+
+permission is granted by the copyright holder:
+
+
+
+• Training or fine-tuning derivative models based on this architecture or code  
+
+• Reproducing the dataset, benchmarks, or training pipeline  
+
+• Redistributing trained or untrained model weights  
+
+• Using this code or derivatives for commercial purposes  
+
+• Modifying and republishing this architecture as a separate project  
+
+• Claiming authorship or joint authorship of the VERIDEX architecture  
+
+• Creating derivative architectures that replicate this system's design or
+
+  training methodology
+
+
+
+──────────────────────────────────────────────────────────────────────────────
+
+ALLOWED WITHOUT PERMISSION
+
+The following uses are permitted:
+
+
+
+• Reading and understanding the conceptual design  
+
+• Citing VERIDEX in academic research (papers, theses, presentations)  
+
+• Referencing high-level ideas for scholarly discussion  
+
+• Linking to this repository in academic or educational contexts  
+
+
+
+──────────────────────────────────────────────────────────────────────────────
+
+DISCLAIMER
+
+This repository is provided "AS IS" without warranties of any kind, express or
+
+implied. The author shall not be liable for any damages arising from use or
+
+misuse of the provided materials.
+
+
+
+──────────────────────────────────────────────────────────────────────────────
+
+TMDB NOTICE
+
+This repository does not distribute any TMDb data. Users are responsible for
+
+complying with TMDb Terms of Use when sourcing metadata independently.
+
+
+
+──────────────────────────────────────────────────────────────────────────────
+
+CONTACT
+
+For licensing, collaboration, permissions, or research inquiries:  
+
+devalth8@gmail.com

@@ -9,6 +9,8 @@ This repository does **NOT** include the training dataset (`multimodal_expanded_
 3. **Publication Standards**: Top-tier research repositories exclude datasets
 4. **Reproducibility**: Dataset can be recreated using provided scripts
 
+This follows standard practice for datasets derived from licensed APIs and prevents redistribution of third-party metadata.
+
 ---
 
 ## 📋 Dataset Specifications

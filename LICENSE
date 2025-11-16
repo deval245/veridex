@@ -10,7 +10,29 @@ This repository provides high-level, conceptual reference code for academic
 
 reading, review, and citation. It is not open-source software and may not be
 
-used as a basis for model training or commercial development.
+used as a basis for commercial development.
+
+
+
+──────────────────────────────────────────────────────────────────────────────
+
+AUTHOR EXCEPTION
+
+──────────────────────────────────────────────────────────────────────────────
+
+The author (Deval Thakkar) retains full, perpetual, and unrestricted rights to
+
+use, modify, distribute, publish, commercialize, license, and create
+
+derivative works based on VERIDEX, including future versions, extensions, or
+
+adaptations, without any limitation.
+
+
+
+All prohibitions and restrictions in this license apply solely to external
+
+users and do not limit or affect the rights of the author in any manner.
 
 
 
@@ -32,9 +54,9 @@ permission is granted by the copyright holder:
 
 
 
-• Training or fine-tuning derivative models based on this architecture or code  
+• Training or fine-tuning models based on this architecture or code for commercial purposes  
 
-• Reproducing the dataset, benchmarks, or training pipeline  
+• Reproducing the dataset, benchmarks, or training pipeline for commercial use  
 
 • Redistributing trained or untrained model weights  
 
@@ -65,6 +87,8 @@ The following uses are permitted:
 • Referencing high-level ideas for scholarly discussion  
 
 • Linking to this repository in academic or educational contexts  
+
+• Training models for non-commercial academic research (reproducibility purposes)  
 
 
 

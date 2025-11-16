@@ -3,7 +3,7 @@ message: "If you use this software, please cite it as below."
 authors:
   - family-names: Thakkar
     given-names: Deval
-    orcid: "https://orcid.org/0000-0000-0000-0000"  # Add your ORCID if available
+    orcid: "https://orcid.org/0009-0009-4685-8946"
 title: "VERIDEX V9.1: Policy-Latent Diffusion Network for Multi-Country Content Rating Prediction"
 version: "9.1"
 date-released: 2025-11-16

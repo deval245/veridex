@@ -187,7 +187,7 @@ VERIDEX Research License - See [LICENSE](LICENSE)
 ## Contact
 
 **Deval Thakkar**
-- Email: devalth8@gmail.com
+- Email: devalth8@veridex.cloud | devalth8@gmail.com
 - GitHub: [@deval245](https://github.com/deval245)
 
 ---

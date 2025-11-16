@@ -177,10 +177,10 @@ VERIDEX V9.1 is a Policy-Latent Diffusion Network for multi-country content rati
 ## Contact
 
 - **Author**: Deval Thakkar
-- **Email**: devalth8@gmail.com
+- **Email**: devalth8@veridex.cloud | devalth8@gmail.com
 - **GitHub**: [@deval245](https://github.com/deval245)
 
 ---
 
-**Last Updated**: November 2024
+**Last Updated**: November 16, 2025
 

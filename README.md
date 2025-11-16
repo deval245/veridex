@@ -169,8 +169,9 @@ python ABLATION_STUDIES_V9.1.py    # Ablation studies
   title={VERIDEX V9.1: Policy-Latent Diffusion Network for Multi-Country Content Rating Prediction},
   author={Thakkar, Deval},
   year={2024},
+  version={9.1},
   url={https://github.com/deval245/veridex},
-  note={Novel PLD-Net architecture achieving 80.6% accuracy on 51-class rating prediction across 65 countries}
+  note={Novel PLD-Net architecture achieving 80.6\% accuracy on 51-class rating prediction across 65 countries}
 }
 ```
 
@@ -180,7 +181,7 @@ python ABLATION_STUDIES_V9.1.py    # Ablation studies
 
 VERIDEX Research License - See [LICENSE](LICENSE)
 
-**Note**: This repository provides high-level, conceptual reference code for academic review only. Training derivative models, reproducing results, commercial use, redistributing model weights, and releasing modified versions are strictly prohibited without written permission.
+**Note**: This repository provides high-level, conceptual reference code for academic review only. Non-commercial academic research training is permitted for reproducibility. Commercial use, redistributing model weights, and releasing modified versions are strictly prohibited without written permission.
 
 ---
 

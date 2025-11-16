@@ -38,11 +38,15 @@ ENV/
 *.sublime-workspace
 .DS_Store
 
-# Environment variables
+# Environment variables & Secrets (NEVER COMMIT)
 .env
 .env.local
 .env.*.local
 *.key
+**/config.json
+**/secrets.json
+**/*_config.py
+**/*_secret.py
 
 # Data & Logs
 data/raw/*
@@ -62,10 +66,18 @@ models/checkpoints/
 # Reports & Outputs
 reports/
 outputs/
-results/
+results/*
+!results/README.md
+!results/*/README.md
 *.csv
 *.xlsx
 !data/benchmarks/*.csv
+
+# Figures (generated)
+figures/*.png
+figures/*.jpg
+figures/*.pdf
+!figures/README.md
 
 # Cache
 .cache/
@@ -111,7 +123,7 @@ dump.rdb
 # VERIDEX SPECIFIC - LARGE FILES (DO NOT PUSH TO GITHUB)
 # ═══════════════════════════════════════════════════════════════════
 
-# Dataset files (too large for GitHub)
+# Dataset files (excluded for publication - see DATA_ACQUISITION.md)
 data/*.json
 data/dataset/*.json
 data/large_dataset/*.json

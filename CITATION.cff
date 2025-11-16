@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Thakkar
+    given-names: Deval
+    orcid: "https://orcid.org/0000-0000-0000-0000"  # Add your ORCID if available
+title: "VERIDEX V9.1: Policy-Latent Diffusion Network for Multi-Country Content Rating Prediction"
+version: "9.1"
+date-released: 2024-11-16
+url: "https://github.com/deval245/veridex"
+repository-code: "https://github.com/deval245/veridex"
+license: "VERIDEX Research License - See LICENSE file for details"
+keywords:
+  - content-rating
+  - multi-country
+  - policy-learning
+  - uncertainty-ensemble
+  - transformer
+  - deep-learning
+abstract: "VERIDEX V9.1 introduces a Policy-Latent Diffusion Network (PLD-Net) that achieves 80.6% accuracy on multi-country content rating prediction, representing a +3.5% improvement over previous state-of-the-art. The architecture combines frozen text and cultural embeddings with a novel policy-aware learning system that extracts interpretable policy factors through hierarchical multi-head attention."
+

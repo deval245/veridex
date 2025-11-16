@@ -2,6 +2,8 @@
 
 This directory contains evaluation outputs from VERIDEX V9.1.
 
+**Important Note**: Evaluation results depend on user-generated checkpoints; results shown here are examples only. Users training their own models may obtain different results based on their training data, hyperparameters, and random seeds.
+
 ## Structure
 
 ```
@@ -56,4 +58,6 @@ Results are automatically saved to:
 ## Note
 
 These files are generated during evaluation. For reproducibility, commit the JSON files but not the PNG files (too large). See `.gitignore` for details.
+
+**PNG Figures**: PNG figures (confusion matrices, calibration plots) are optional for the repository due to file size. For paper submissions, use high-resolution versions generated during evaluation.
 

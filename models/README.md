@@ -1,40 +1,52 @@
 # Pre-trained Models
 
-This directory contains information about pre-trained VERIDEX models.
+This directory contains information about VERIDEX model architectures.
 
-## Model Checkpoints
+## Important Notes
 
-Due to file size limitations, model checkpoints are hosted on cloud storage.
+- **Checkpoints are not distributed** due to licensing restrictions and file size limitations.
+- **Users must train their own model** using the provided training script `TRAIN_V9.1_ULTIMATE.py`.
+- **Architecture, documentation, and evaluation code** are included for academic reference only.
+- **Model weights are not publicly available** and cannot be redistributed.
 
-### V9.1 (Best Model) - Recommended
+---
 
-- **Accuracy**: 80.60% validation, 80.33% test
-- **Size**: 891 MB
-- **Format**: All-in-one `.pt` checkpoint
-- **Contains**: V2 base, V8.1 cultural layer, PLD-Net, ensemble weights
-- **Download**: 
-  - [Google Drive](https://drive.google.com/...) - *Add your link here*
-  - [Hugging Face Hub](https://huggingface.co/...) - *Optional: Upload to HF*
+## Model Architectures
 
-**SHA256 Checksum**: `abc123...` - *Add checksum after upload*
+### V9.1 (Best Model)
+
+**Architecture**: Policy-Latent Diffusion Network (PLD-Net)
+
+- **Components**: V2 base (frozen), V8.1 cultural layer (frozen), PLD-Net (trainable), uncertainty-weighted ensemble
+- **Performance**: 80.60% validation accuracy, 80.33% test accuracy
+- **Format**: All-in-one checkpoint containing complete model state
+- **Key Innovation**: Combines frozen baseline with trainable policy-aware network
 
 ### V8.1 (Baseline)
 
-- **Accuracy**: 78.65% validation, 79.29% test
-- **Size**: 1.2 MB (split checkpoint)
-- **Format**: Cultural layer only (requires V2 base)
-- **Download**: [Google Drive](https://drive.google.com/...) - *Add your link here*
+**Architecture**: Text encoder + Cultural embeddings
 
-**Note**: V8.1 is a "split checkpoint" - it only contains the cultural layer. You need the V2 base model to use it.
+- **Components**: DeBERTa-v3-base text encoder, 64-dim cultural embeddings, calibration layer
+- **Performance**: 78.65% validation accuracy, 79.29% test accuracy
+- **Format**: Split checkpoint (cultural layer only, requires V2 base)
+- **Key Innovation**: Country-specific cultural embeddings for rating prediction
+
+**Note**: V8.1 uses a "split checkpoint" architecture where the cultural layer is stored separately from the V2 base model. This allows incremental training of cultural components.
 
 ### V2 (Text-only Baseline)
 
-- **Accuracy**: 77.12% validation
-- **Size**: 706 MB
-- **Format**: Full model checkpoint
-- **Download**: [Google Drive](https://drive.google.com/...) - *Add your link here*
+**Architecture**: Text-only transformer
 
-## Loading Models
+- **Components**: DeBERTa-v3-base encoder, multi-task classification heads
+- **Performance**: 77.12% validation accuracy
+- **Format**: Full model checkpoint
+- **Purpose**: Baseline for text-only rating prediction without cultural context
+
+---
+
+## Model Loading (Conceptual)
+
+The following code examples demonstrate how models would be loaded **if you have trained your own checkpoint** using the provided training scripts. These checkpoints are **not included** in this repository.
 
 ### V9.1 (All-in-One)
 
@@ -42,87 +54,77 @@ Due to file size limitations, model checkpoints are hosted on cloud storage.
 import torch
 from TRAIN_V9.1_ULTIMATE import PLDNet
 
-# Load checkpoint
-checkpoint = torch.load('best_model_v9.1_improved.pt', map_location='cpu')
+# Load your private checkpoint (not provided with repo)
+# checkpoint = torch.load('path/to/your/private_checkpoint.pt', map_location='cpu')
 
-# Initialize model (use config from checkpoint)
-model = PLDNet(
-    model_name=checkpoint['config']['model_name'],
-    num_classes=checkpoint['config']['num_classes'],
-    num_countries=checkpoint['config']['num_countries'],
-    # ... other config from checkpoint
-)
+# Initialize model architecture (use config from checkpoint)
+# model = PLDNet(
+#     model_name=checkpoint['config']['model_name'],
+#     num_classes=checkpoint['config']['num_classes'],
+#     num_countries=checkpoint['config']['num_countries'],
+#     # ... other config from checkpoint
+# )
 
 # Load weights
-model.load_state_dict(checkpoint['model_state_dict'])
-model.eval()
+# model.load_state_dict(checkpoint['model_state_dict'])
+# model.eval()
 ```
 
 ### V8.1 (Split Checkpoint)
 
 ```python
-# First load V2 base
-v2_checkpoint = torch.load('v2_baseline.pt')
-v2_model = V2BaseModel(...)
-v2_model.load_state_dict(v2_checkpoint['model_state_dict'])
+# Conceptual example - requires your own trained checkpoints
+# First load V2 base (from your private checkpoint)
+# v2_checkpoint = torch.load('path/to/your/v2_checkpoint.pt')
+# v2_model = V2BaseModel(...)
+# v2_model.load_state_dict(v2_checkpoint['model_state_dict'])
 
-# Then load V8.1 cultural layer
-v8_checkpoint = torch.load('best_model_v8.1.pt')
-cultural_layer = CulturalCalibrationLayer(...)
-cultural_layer.load_state_dict(v8_checkpoint['cultural_layer_state_dict'])
+# Then load V8.1 cultural layer (from your private checkpoint)
+# v8_checkpoint = torch.load('path/to/your/v8_cultural_checkpoint.pt')
+# cultural_layer = CulturalCalibrationLayer(...)
+# cultural_layer.load_state_dict(v8_checkpoint['cultural_layer_state_dict'])
 
 # Combine
-v8_model = V8Model(v2_model, cultural_layer)
+# v8_model = V8Model(v2_model, cultural_layer)
 ```
 
-## Model Verification
+**Note**: All checkpoint loading code is commented out to emphasize that checkpoints are not provided. Users must train their own models.
 
-After downloading, verify the checkpoint:
-
-```python
-import torch
-
-checkpoint = torch.load('best_model_v9.1_improved.pt', map_location='cpu')
-print(f"Epoch: {checkpoint.get('epoch', 'N/A')}")
-print(f"Validation Accuracy: {checkpoint.get('val_accuracy', 'N/A')}")
-print(f"Test Accuracy: {checkpoint.get('test_accuracy', 'N/A')}")
-print(f"Model Keys: {len(checkpoint['model_state_dict'].keys())}")
-```
+---
 
 ## File Structure
 
 ```
 models/
 ├── README.md                    # This file
-└── (checkpoints not in repo - too large)
+└── (checkpoints not included - users must train their own)
 ```
-
-## Alternative: Hugging Face Hub
-
-For better discoverability, consider uploading to Hugging Face Hub:
-
-```bash
-# Install huggingface_hub
-pip install huggingface_hub
-
-# Upload model
-from huggingface_hub import HfApi
-api = HfApi()
-api.upload_file(
-    path_or_fileobj="best_model_v9.1_improved.pt",
-    path_in_repo="pytorch_model.bin",
-    repo_id="deval245/veridex-v9.1",
-    repo_type="model"
-)
-```
-
-## License
-
-All models are released under VERIDEX Research License. See [LICENSE](../LICENSE) for details.
-
-**Note**: Model weights are provided for academic review only. Redistribution, commercial use, and training derivative models are strictly prohibited without written permission.
 
 ---
 
-**Note**: Update download links after uploading models to cloud storage.
+## Training Your Own Model
 
+To obtain model weights, you must train the model yourself:
+
+1. **Obtain Dataset**: See [DATA_ACQUISITION.md](../DATA_ACQUISITION.md) for instructions
+2. **Run Training**: Execute `TRAIN_V9.1_ULTIMATE.py` with your dataset
+3. **Checkpoints**: Training will save checkpoints to your specified directory
+4. **Evaluation**: Use `EVALUATE_V9.1_FINAL.py` to evaluate your trained model
+
+**Expected Training Time**: ~3-4 hours on A100 GPU (20 epochs with early stopping)
+
+---
+
+## License
+
+Models are governed by the VERIDEX Research License. See [LICENSE](../LICENSE) for details.
+
+**Restrictions**:
+- Redistribution of model weights is strictly prohibited
+- Commercial use requires written permission
+- Training derivative models requires written permission
+- Model weights are for academic review only
+
+---
+
+**Last Updated**: November 16, 2025

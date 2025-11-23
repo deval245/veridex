@@ -22,7 +22,7 @@ from tqdm import tqdm
 import warnings
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, f1_score, precision_score, recall_score
 from sklearn.calibration import calibration_curve
 warnings.filterwarnings('ignore')
 
@@ -291,11 +291,33 @@ def evaluate_all_models(model, data_loader, device, label_map):
     pld_acc = accuracy_score(all_labels, all_pld_preds) * 100
     ensemble_acc = accuracy_score(all_labels, all_ensemble_preds) * 100
     
+    # Calculate F1, Precision, Recall (macro and weighted)
+    v2_f1_macro = f1_score(all_labels, all_v2_preds, average='macro') * 100
+    v2_f1_weighted = f1_score(all_labels, all_v2_preds, average='weighted') * 100
+    v2_precision_macro = precision_score(all_labels, all_v2_preds, average='macro', zero_division=0) * 100
+    v2_recall_macro = recall_score(all_labels, all_v2_preds, average='macro', zero_division=0) * 100
+    
+    v8_f1_macro = f1_score(all_labels, all_v8_preds, average='macro') * 100
+    v8_f1_weighted = f1_score(all_labels, all_v8_preds, average='weighted') * 100
+    v8_precision_macro = precision_score(all_labels, all_v8_preds, average='macro', zero_division=0) * 100
+    v8_recall_macro = recall_score(all_labels, all_v8_preds, average='macro', zero_division=0) * 100
+    
+    ensemble_f1_macro = f1_score(all_labels, all_ensemble_preds, average='macro') * 100
+    ensemble_f1_weighted = f1_score(all_labels, all_ensemble_preds, average='weighted') * 100
+    ensemble_precision_macro = precision_score(all_labels, all_ensemble_preds, average='macro', zero_division=0) * 100
+    ensemble_recall_macro = recall_score(all_labels, all_ensemble_preds, average='macro', zero_division=0) * 100
+    
     results = {
         'v2_accuracy': v2_acc,
         'v8_accuracy': v8_acc,
         'pld_accuracy': pld_acc,
         'ensemble_accuracy': ensemble_acc,
+        'v2_f1_macro': v2_f1_macro,
+        'v2_f1_weighted': v2_f1_weighted,
+        'v8_f1_macro': v8_f1_macro,
+        'v8_f1_weighted': v8_f1_weighted,
+        'ensemble_f1_macro': ensemble_f1_macro,
+        'ensemble_f1_weighted': ensemble_f1_weighted,
         'v2_preds': all_v2_preds,
         'v8_preds': all_v8_preds,
         'pld_preds': all_pld_preds,
@@ -366,13 +388,12 @@ def evaluate_per_rating_system(results, samples):
 def plot_confusion_matrices(system_metrics, label_map, output_dir):
     """Plot confusion matrices for each rating system"""
     id_to_label = {v: k for k, v in label_map.items()}
-    labels = [id_to_label[i] for i in sorted(id_to_label.keys())]
     
     n_systems = len(system_metrics)
     cols = 3
     rows = (n_systems + cols - 1) // cols
     
-    fig, axes = plt.subplots(rows, cols, figsize=(15, 5*rows))
+    fig, axes = plt.subplots(rows, cols, figsize=(18, 6*rows))
     if n_systems == 1:
         axes = [axes]
     else:
@@ -382,14 +403,35 @@ def plot_confusion_matrices(system_metrics, label_map, output_dir):
         ax = axes[idx]
         cm = metrics['confusion_matrix']
         
-        # Normalize
-        cm_norm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        # Get only labels that appear in this system's confusion matrix
+        # Filter out rows/columns with all zeros
+        row_sums = cm.sum(axis=1)
+        col_sums = cm.sum(axis=0)
+        non_zero_rows = np.where(row_sums > 0)[0]
+        non_zero_cols = np.where(col_sums > 0)[0]
         
+        # Get unique labels that appear in this system
+        active_indices = sorted(set(non_zero_rows.tolist() + non_zero_cols.tolist()))
+        system_labels = [id_to_label[i] for i in active_indices if i in id_to_label]
+        
+        # Filter confusion matrix to only active labels
+        cm_filtered = cm[np.ix_(active_indices, active_indices)]
+        
+        # Normalize
+        cm_norm = cm_filtered.astype('float') / (cm_filtered.sum(axis=1)[:, np.newaxis] + 1e-8)
+        
+        # Rotate labels to avoid overlap
         sns.heatmap(cm_norm, annot=True, fmt='.2f', cmap='Blues', ax=ax,
-                   xticklabels=labels, yticklabels=labels)
-        ax.set_title(f'{rating_sys}\nAcc: {metrics["ensemble_accuracy"]:.2f}% (n={metrics["count"]})')
-        ax.set_xlabel('Predicted')
-        ax.set_ylabel('True')
+                   xticklabels=system_labels, yticklabels=system_labels,
+                   cbar_kws={'shrink': 0.8})
+        ax.set_title(f'{rating_sys}\nAcc: {metrics["ensemble_accuracy"]:.2f}% (n={metrics["count"]})', 
+                    fontsize=11, fontweight='bold')
+        ax.set_xlabel('Predicted', fontsize=10)
+        ax.set_ylabel('True', fontsize=10)
+        
+        # Rotate tick labels to prevent overlap
+        plt.setp(ax.get_xticklabels(), rotation=45, ha='right', fontsize=8)
+        plt.setp(ax.get_yticklabels(), rotation=0, fontsize=8)
     
     # Hide unused subplots
     for idx in range(n_systems, len(axes)):
@@ -492,6 +534,17 @@ def main():
     print(f"\nImprovement over V8.1:   {results['ensemble_accuracy'] - results['v8_accuracy']:+.2f}%")
     print("="*80)
     
+    # Print F1/Precision/Recall metrics
+    print("\n" + "="*80)
+    print("📊 ADDITIONAL METRICS: F1, PRECISION, RECALL")
+    print("="*80)
+    print(f"{'Model':<20} {'Accuracy':<12} {'Macro F1':<12} {'Weighted F1':<12}")
+    print("-" * 80)
+    print(f"{'V2 (Text-only)':<20} {results['v2_accuracy']:>10.2f}%  {results['v2_f1_macro']:>10.2f}%  {results['v2_f1_weighted']:>10.2f}%")
+    print(f"{'V8.1 (Text+Cultural)':<20} {results['v8_accuracy']:>10.2f}%  {results['v8_f1_macro']:>10.2f}%  {results['v8_f1_weighted']:>10.2f}%")
+    print(f"{'V9.1 (Ensemble)':<20} {results['ensemble_accuracy']:>10.2f}%  {results['ensemble_f1_macro']:>10.2f}%  {results['ensemble_f1_weighted']:>10.2f}%")
+    print("="*80)
+    
     # Evaluate per rating system
     print("\n" + "="*80)
     print("🔍 EVALUATING PER RATING SYSTEM")
@@ -523,7 +576,13 @@ def main():
             'v8_accuracy': float(results['v8_accuracy']),
             'pld_accuracy': float(results['pld_accuracy']),
             'ensemble_accuracy': float(results['ensemble_accuracy']),
-            'improvement_over_v8': float(results['ensemble_accuracy'] - results['v8_accuracy'])
+            'improvement_over_v8': float(results['ensemble_accuracy'] - results['v8_accuracy']),
+            'v2_f1_macro': float(results['v2_f1_macro']),
+            'v2_f1_weighted': float(results['v2_f1_weighted']),
+            'v8_f1_macro': float(results['v8_f1_macro']),
+            'v8_f1_weighted': float(results['v8_f1_weighted']),
+            'ensemble_f1_macro': float(results['ensemble_f1_macro']),
+            'ensemble_f1_weighted': float(results['ensemble_f1_weighted'])
         },
         'per_system': {
             k: {

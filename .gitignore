@@ -146,6 +146,10 @@ data/dataset/checkpoint*.json
 VERIFICATION_REPORT.md
 FINAL_FILES_LIST.md
 
+# Paper documentation (local only, not pushed to main)
+PAPER_ACCURACY_FIXES.md
+paper/figures/README.md
+
 # Documentation build
 docs/_build/
 site/

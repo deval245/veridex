@@ -1,6 +1,6 @@
-# VERIDEX V9.1: Policy-Latent Diffusion Network for Multi-Country Content Rating Prediction
+VERIDEX V9.1: Policy-Aware Ensemble Network for Multi-Country Content Rating Prediction
 
-**Research-Grade AI Architecture | Novel Contributions | 80.6% Accuracy**
+Interpretable Ensemble Learning for Cross-Cultural Content Rating Prediction
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.8+-red.svg)](https://pytorch.org/)
@@ -10,9 +10,12 @@
 
 ## Abstract
 
-VERIDEX V9.1 introduces a **Policy-Latent Diffusion Network (PLD-Net)**—a novel architecture that achieves **80.6% validation accuracy** and **80.3% test accuracy** on multi-country content rating prediction, representing a **+3.48% improvement** over the V2 baseline (77.12%) and **+1.95% over V8.1** (78.65% validation). PLD-Net combines frozen text and cultural embeddings with a policy-aware learning system that extracts interpretable rating factors (violence, sexual content, profanity, fear, drugs, themes) through hierarchical multi-head attention, then employs an uncertainty-weighted ensemble to dynamically balance predictions.
 
-**Key Innovation**: Instead of fine-tuning the entire model, we freeze the strong baseline (V8.1, 78.65% validation accuracy) and learn a complementary policy-aware network that captures interpretable rating factors, then intelligently ensemble both predictions based on per-sample uncertainty.
+VERIDEX V9.1 introduces a Policy-Aware Ensemble Network (PAE-Net) that achieves 80.6% validation accuracy and 80.3% test accuracy on multi-country content rating prediction, representing a +3.48% improvement over the V2 baseline (77.12%) and +1.95% over V8.1 (78.65% validation).
+
+The proposed architecture combines frozen text and cultural embeddings with a policy-aware learning system that extracts interpretable rating factors (violence, sexual content, profanity, fear, drugs, themes) through hierarchical multi-head attention, and ensembles predictions from both components to improve robustness and generalization.
+
+Key Idea: Instead of fine-tuning the entire model, we freeze a strong baseline (V8.1) and learn a complementary policy-aware network that captures interpretable rating factors, then ensemble both predictions to improve performance while preserving interpretability.
 
 ---
 
@@ -22,7 +25,7 @@ VERIDEX V9.1 introduces a **Policy-Latent Diffusion Network (PLD-Net)**—a nove
 |-------|-----------|------|-------------|
 | **V2 (Text-only)** | 77.12% | - | Baseline |
 | **V8.1 (Text + Cultural)** | 78.65% | 79.29% | +1.53% |
-| **V9.1 (PLD-Net)** | **80.60%** | **80.33%** | **+1.95%** |
+| **V9.1 (PAE-Net)** | **80.60%** | **80.33%** | **+1.95%** |
 
 **Total Improvement**: +3.48% over V2 baseline
 
@@ -30,17 +33,21 @@ VERIDEX V9.1 introduces a **Policy-Latent Diffusion Network (PLD-Net)**—a nove
 
 ## Novel Contributions
 
-### 1. Uncertainty-Weighted Policy Ensemble (UWPE)
-Dynamically weights predictions from frozen V8.1 baseline and learned PLD-Net based on per-sample uncertainty estimates.
+1. Uncertainty-Weighted Policy Ensemble (UWPE)
 
-### 2. Hierarchical Multi-Head Policy Attention (HMPA)
-Each of 6 policy factors uses dedicated multi-head attention over text features to extract interpretable policy representations.
+Combines predictions from the frozen V8.1 baseline and the learned policy-aware network using per-sample confidence estimates.
 
-### 3. Policy Consistency Regularization (PCR)
-Contrastive learning ensures movies with similar content have similar policy patterns.
+2. Hierarchical Multi-Head Policy Attention (HMPA)
 
-### 4. Progressive Knowledge Distillation (PKD)
-Temperature-based curriculum where PLD-Net initially learns from V8.1, then transitions to ground-truth labels.
+Dedicated attention heads extract interpretable representations for each policy factor.
+
+3. Policy Consistency Regularization (PCR)
+
+Encourages similar policy representations for movies with similar content.
+
+4. Progressive Knowledge Distillation (PKD)
+
+Training curriculum where the policy-aware network first learns from the baseline and gradually shifts to ground-truth supervision.
 
 **Detailed formulations**: See [MODEL_CARD.md](MODEL_CARD.md)
 
@@ -53,23 +60,22 @@ Input: [Title + Synopsis, Country ID]
          ↓
     ┌─────────┴─────────┐
     │                    │
-V8.1 Base (Frozen)    PLD-Net (Trainable)
+V8.1 Base (Frozen)   Policy-Aware Network
     │                    │
     │              Policy Extractor (HMPA)
     │              Policy Fusion
     │              Rating Head
     └──────────┬──────────┘
-        Uncertainty Ensemble (UWPE)
+        Ensemble Combination
                ↓
         Final Prediction
 ```
 
 **Components**:
-- **Frozen V8.1**: DeBERTa-v3-base + 64-dim cultural embeddings (186M params)
-- **PLD-Net**: 6 × Multi-Head Attention + Policy Fusion + Rating Head (15M params)
-- **Ensemble**: Uncertainty-weighted combination
+	•	Frozen V8.1: DeBERTa-v3-base + 64-dim cultural embeddings
+	•	Policy-Aware Network: Multi-head attention + policy fusion + rating head
+	•	Ensemble: Weighted combination of predictions
 
-**Full architecture details**: See [MODEL_CARD.md](MODEL_CARD.md)
 
 ---
 

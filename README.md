@@ -176,9 +176,7 @@ python ABLATION_STUDIES_V9.1.py    # Ablation studies
 
 5. **Temporal Bias**: Dataset spans 1980-2024 with recent movies over-represented, potentially biasing predictions toward contemporary rating standards.
 
-6. **Uncertainty Ensemble**:Uncertainty-Weighted Policy Ensemble (UWPE)
-Combines predictions from the frozen V8.1 baseline and the learned policy-aware network using per-sample confidence estimates.
-In the current configuration, uncertainty weighting performs comparably to fixed 50/50 weighting, as discussed in the Limitations section.
+6. **Uncertainty Ensemble**:Uncertainty-Weighted Policy Ensemble (UWPE) combines predictions from the frozen V8.1 baseline and the learned policy-aware network using per-sample confidence estimates. In the current configuration, uncertainty weighting performs comparably to fixed 50/50 weighting, as discussed in the Limitations section.
 7. **Interpretability Trade-off**: While policy factors provide interpretability, they may oversimplify complex rating decisions that involve multiple interacting factors.
 
 8. **Dataset Dependency**: Performance depends on TMDb metadata quality; missing or inaccurate synopses can degrade predictions.
@@ -226,5 +224,4 @@ VERIDEX Research License - See [LICENSE](LICENSE)
 
 ---
 
-**Last Updated**: November 16, 2025 | **Version**: V9.1 | **Status**: ✅ Publication-Ready, & **  arXiv submission pending
-
+**Last Updated: November 16, 2025 | Version: V9.1 | Status: arXiv submission pending

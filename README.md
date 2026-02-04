@@ -189,13 +189,11 @@ python ABLATION_STUDIES_V9.1.py    # Ablation studies
 ## Citation
 
 ```bibtex
-@software{thakkar2024veridex,
-  title={VERIDEX V9.1: Policy-Latent Diffusion Network for Multi-Country Content Rating Prediction},
+@article{thakkar2024veridex,
+  title={Policy-Aware Ensemble Networks for Cross-Cultural Content Rating Prediction},
   author={Thakkar, Deval},
   year={2024},
-  version={9.1},
-  url={https://github.com/deval245/veridex},
-  note={Novel PLD-Net architecture achieving 80.6\% accuracy on 51-class rating prediction across 65 countries}
+  url={https://github.com/deval245/veridex}
 }
 ```
 

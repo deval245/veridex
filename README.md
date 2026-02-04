@@ -143,11 +143,11 @@ python ABLATION_STUDIES_V9.1.py    # Ablation studies
 | Variant | Test Accuracy | Drop vs V9.1 |
 |---------|--------------|--------------|
 | **V9.1 Full** | **80.33%** | Baseline |
-| Remove PLD-Net | 79.29% | -1.04% |
+| Remove Policy-aware-Network | 79.29% | -1.04% |
 | Fixed 50/50 Ensemble | 80.33% | 0.00% |
 | V2 Baseline | 77.59% | -2.74% |
 
-**Key Finding**: PLD-Net contributes +1.04% accuracy.
+**Key Finding**: The policy-aware component contributes +1.04% accuracy.
 
 **Detailed results**: See [MODEL_CARD.md](MODEL_CARD.md)
 
@@ -176,8 +176,9 @@ python ABLATION_STUDIES_V9.1.py    # Ablation studies
 
 5. **Temporal Bias**: Dataset spans 1980-2024 with recent movies over-represented, potentially biasing predictions toward contemporary rating standards.
 
-6. **Uncertainty Ensemble**: Uncertainty-weighted ensemble shows no improvement over fixed 50/50 weights in current configuration, suggesting limited benefit from learned uncertainty.
-
+6. **Uncertainty Ensemble**:Uncertainty-Weighted Policy Ensemble (UWPE)
+Combines predictions from the frozen V8.1 baseline and the learned policy-aware network using per-sample confidence estimates.
+In the current configuration, uncertainty weighting performs comparably to fixed 50/50 weighting, as discussed in the Limitations section.
 7. **Interpretability Trade-off**: While policy factors provide interpretability, they may oversimplify complex rating decisions that involve multiple interacting factors.
 
 8. **Dataset Dependency**: Performance depends on TMDb metadata quality; missing or inaccurate synopses can degrade predictions.
@@ -225,4 +226,5 @@ VERIDEX Research License - See [LICENSE](LICENSE)
 
 ---
 
-**Last Updated**: November 16, 2025 | **Version**: V9.1 | **Status**: ✅ Publication-Ready
+**Last Updated**: November 16, 2025 | **Version**: V9.1 | **Status**: ✅ Publication-Ready, & **  arXiv submission pending
+
